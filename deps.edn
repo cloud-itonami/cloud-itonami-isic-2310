@@ -32,6 +32,7 @@
          {:local/root "../../kotoba-lang/langchain"}}}
   ;; clojure -M:dev:run  -> drive the demo through one OperationActor
   :run {:main-opts ["-m" "glassworks.sim"]}
+  :render-html {:main-opts ["-m" "glassworks.render-html"]}
   :export {:main-opts ["-m" "glassworks.export-run"]}
   :test {:extra-paths ["test"]
          :extra-deps {io.github.cognitect-labs/test-runner
