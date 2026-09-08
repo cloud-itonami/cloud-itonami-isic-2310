@@ -31,7 +31,7 @@
   is `glassworks.operation`'s `:actuation/ship-glass-panel-batch`/
   `:actuation/issue-glazing-certificate`, always human-gated -- see
   README `Actuation`)."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 (defn- unsigned-certificate
   "Every certificate this actor produces is UNSIGNED -- signature is
@@ -88,7 +88,7 @@
     (throw (ex-info "glass-panel-batch-shipment: jurisdiction required" {})))
   (when (< sequence 0)
     (throw (ex-info "glass-panel-batch-shipment: sequence must be >= 0" {})))
-  (let [shipment-number (str (str/upper-case jurisdiction) "-GLZ-" (zero-pad sequence 6))
+  (let [shipment-number (str (str/upper jurisdiction) "-GLZ-" (zero-pad sequence 6))
         record {"record_id" shipment-number
                 "kind" "glass-panel-batch-shipment-draft"
                 "batch_id" batch-id
@@ -116,7 +116,7 @@
     (throw (ex-info "glazing-certificate: jurisdiction required" {})))
   (when (< sequence 0)
     (throw (ex-info "glazing-certificate: sequence must be >= 0" {})))
-  (let [evidence-number (str (str/upper-case jurisdiction) "-GTC-" (zero-pad sequence 6))
+  (let [evidence-number (str (str/upper jurisdiction) "-GTC-" (zero-pad sequence 6))
         record {"record_id" evidence-number
                 "kind" "glazing-certificate-draft"
                 "batch_id" batch-id
