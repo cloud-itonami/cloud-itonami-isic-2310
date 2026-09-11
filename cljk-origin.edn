@@ -1,0 +1,23 @@
+{:format :kotoba.cljk-origin/v1
+ :renamed-on "2026-09-11"
+ :decision "adr-2609111500-cljk-rename-all-clojure-source (com-junkawasaki/root 90-docs/adr; owner instruction 2026-09-11)"
+ :rule "value = the extension the file had before the rename. A path ending in .clj.cljk or .cljs.cljk kept it in the name because both platform files existed (or the plain target was taken)."
+ :origins
+ {"src/glassworks/export.cljk" ".cljc"
+  "src/glassworks/export_run.cljk" ".clj"
+  "src/glassworks/facts.cljk" ".cljc"
+  "src/glassworks/glassworksadvisor.cljk" ".cljc"
+  "src/glassworks/governor.cljk" ".cljc"
+  "src/glassworks/operation.cljk" ".cljc"
+  "src/glassworks/phase.cljk" ".cljc"
+  "src/glassworks/registry.cljk" ".cljc"
+  "src/glassworks/render_html.cljk" ".clj"
+  "src/glassworks/robotics.cljk" ".cljc"
+  "src/glassworks/sim.cljk" ".cljc"
+  "src/glassworks/store.cljk" ".cljc"
+  "test/glassworks/export_test.cljk" ".clj"
+  "test/glassworks/facts_test.cljk" ".clj"
+  "test/glassworks/governor_contract_test.cljk" ".clj"
+  "test/glassworks/phase_test.cljk" ".clj"
+  "test/glassworks/registry_test.cljk" ".clj"
+  "test/glassworks/store_contract_test.cljk" ".clj"}}
