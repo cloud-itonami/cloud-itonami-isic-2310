@@ -1,5 +1,5 @@
 (ns glassworks.sim
-  "Demo driver -- `clojure -M:dev:run`. Walks a clean automotive-safety-
+  "Demo driver -- `kbb -M:dev:run`. Walks a clean automotive-safety-
   glazing batch through intake -> glazing-standard requirements
   verification -> end-of-line-defect screening -> robot flexural-bend-
   test simulation -> batch-shipment proposal (always escalates) ->
