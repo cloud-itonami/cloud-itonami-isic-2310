@@ -36,7 +36,7 @@
   the audit trail a community trusting a flat-glass manufacturer
   needs, and the evidence a manufacturer needs if a shipment or
   certificate decision is later disputed."
-  (:require #?(:clj  [clojure.edn :as edn]
+  (:require #?(:clj  [kotoba.lang.edn :as edn]
                :cljs [cljs.reader :as edn])
             [glassworks.registry :as registry]
             [glassworks.robotics :as robotics]
