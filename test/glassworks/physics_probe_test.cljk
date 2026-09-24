@@ -1,0 +1,57 @@
+(ns glassworks.physics-probe-test
+  "The probe is the bot's only source of \"measured\"; these pin that it
+  measures (every run numeric, count = expected), that the numbers come
+  from the simulation (the derived boundaries really straddle the
+  tempered floor), and that a changed solver would show."
+  (:require [clojure.test :refer [deftest is testing]]
+            [glassworks.physics-probe :as probe]
+            [glassworks.robotics :as robotics]))
+
+(def ^:private floor
+  (get-in robotics/flexural-strength-band-mpa [:automotive-tempered :min]))
+
+(defn- stress [kg mm]
+  (:sim-peak-flexural-stress-mpa
+   (robotics/flexural-telemetry-for {:flexural-test-pin-mass-kg kg
+                                     :panel-thickness-actual-mm mm})))
+
+(deftest probe-measures-every-run
+  (let [p (probe/probe)]
+    (is (= "itonami.physical-ai.probe.v1" (:physics-probe/schema p)))
+    (is (pos? (:count p)))
+    (is (= (:count p) (:expected p) (count (:runs p))))
+    (testing "every run carries a numeric stress, force and tick count from the trajectory"
+      (doseq [r (:runs p)]
+        (is (number? (get-in r [:quantities :sim-peak-flexural-stress-mpa])))
+        (is (pos? (get-in r [:quantities :sim-peak-flexural-force-n])))
+        (is (pos? (get-in r [:quantities :ticks])))))))
+
+(deftest stress-rises-with-pin-mass-at-fixed-thickness
+  (let [runs (->> (:runs (probe/probe))
+                  (filter #(= 4.0 (double (get-in % [:input :thickness-mm]))))
+                  (sort-by #(get-in % [:input :pin-mass-kg])))
+        stresses (map #(get-in % [:quantities :sim-peak-flexural-stress-mpa]) runs)]
+    (is (<= 4 (count stresses)))
+    (is (apply < stresses))))
+
+(deftest stress-falls-with-thickness-as-one-over-h-squared
+  (testing "same simulated force, thinner panel reads higher stress (beam bending)"
+    (let [s4 (stress 42.7 4.0) s2 (stress 42.7 2.0)]
+      (is (> s2 s4))
+      (is (< (Math/abs (- (/ s2 s4) 4.0)) 1e-6)))))
+
+(deftest derived-mass-boundary-straddles-the-floor
+  (let [m (probe/min-passing-pin-mass-kg)]
+    (is (number? m))
+    (is (>= (stress m 4.0) floor))
+    (is (< (stress (* 0.99 m) 4.0) floor))))
+
+(deftest derived-thickness-boundary-straddles-the-floor
+  (let [h (probe/max-passing-thickness-mm)]
+    (is (number? h))
+    (is (>= (stress 42.7 h) floor))
+    (is (< (stress 42.7 (* 1.01 h)) floor))))
+
+(deftest bracket-that-does-not-straddle-answers-nil
+  (is (nil? (probe/min-passing-pin-mass-kg 4.0 100.0 200.0 10)))
+  (is (nil? (probe/max-passing-thickness-mm 42.7 0.1 1.0 10))))
