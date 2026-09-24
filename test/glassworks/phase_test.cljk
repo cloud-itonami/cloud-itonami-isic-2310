@@ -3,7 +3,7 @@
   regress on: `:actuation/ship-glass-panel-batch`/`:actuation/issue-
   glazing-certificate` must NEVER be a member of any phase's `:auto`
   set."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [glassworks.phase :as phase]))
 
 (deftest ship-glass-panel-batch-never-auto-at-any-phase

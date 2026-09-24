@@ -1,5 +1,5 @@
 (ns glassworks.registry-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [glassworks.registry :as r]))
 
 ;; ----------------------------- panel-thickness-deviation-out-of-range? -----------------------------
